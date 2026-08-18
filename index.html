@@ -3,18 +3,209 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hello World — Live Update</title>
+    <meta
+      name="description"
+      content="A polished one-page CV website inspired by a Wix professional CV template."
+    />
+    <title>Justin Hsu | Professional CV</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
-      <h1>Hello World</h1>
-      <p id="message">Welcome! This page shows a live update date message below.</p>
-      <div class="update">
-        <strong>Last updated:</strong>
-        <span id="last-updated">—</span>
-      </div>
-    </main>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="Go to top">
+          <span class="brand-mark">JH</span>
+          <span class="brand-copy">
+            <strong>Justin Hsu</strong>
+            <span>Content writer • researcher • analyst</span>
+          </span>
+        </a>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          Menu
+        </button>
+
+        <nav id="site-nav" class="site-nav">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main id="home">
+        <section class="hero panel">
+          <div class="hero-portrait" aria-hidden="true">
+            <div class="portrait-ring">
+              <div class="portrait-face">
+                <span>JH</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <p class="eyebrow">Professional CV</p>
+            <h1>Clear writing, thoughtful research, and polished digital communication.</h1>
+            <p class="intro">
+              I help teams turn complex ideas into clear, credible content. This page is
+              structured like a modern Wix CV template: concise, elegant, and easy to scan.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="#contact">Contact Me</a>
+              <a class="button button-secondary" href="#projects">View Projects</a>
+            </div>
+
+            <dl class="hero-stats" aria-label="Highlights">
+              <div>
+                <dt>8+</dt>
+                <dd>years of writing and presentation experience</dd>
+              </div>
+              <div>
+                <dt>30+</dt>
+                <dd>research-led articles, reports, and campaigns</dd>
+              </div>
+              <div>
+                <dt>3</dt>
+                <dd>core strengths: strategy, clarity, execution</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <section id="about" class="content-grid">
+          <article class="panel focus-card">
+            <p class="section-label">About</p>
+            <h2>A strong CV should feel calm, direct, and confident.</h2>
+            <p>
+              I build content that helps people understand ideas quickly. My work blends
+              writing, editing, research, and a practical sense of design so the message lands
+              clearly.
+            </p>
+          </article>
+
+          <aside class="panel info-card">
+            <p class="section-label">Snapshot</p>
+            <ul class="info-list">
+              <li><span>Location</span><strong>Taipei, Taiwan</strong></li>
+              <li><span>Focus</span><strong>CV, branding, web content</strong></li>
+              <li><span>Email</span><strong>justin@example.com</strong></li>
+              <li><span>Status</span><strong>Open to freelance work</strong></li>
+            </ul>
+          </aside>
+        </section>
+
+        <section id="experience" class="panel">
+          <div class="section-heading">
+            <p class="section-label">Experience</p>
+            <h2>Selected roles</h2>
+          </div>
+
+          <div class="timeline">
+            <article class="timeline-item">
+              <div class="timeline-meta">
+                <span class="year">2024 - Present</span>
+                <span class="tag">Lead content strategist</span>
+              </div>
+              <div class="timeline-body">
+                <h3>Digital communication and editorial planning</h3>
+                <p>
+                  Shape concise messaging, coordinate article outlines, and refine the voice
+                  of digital deliverables across websites, resumes, and internal documents.
+                </p>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-meta">
+                <span class="year">2021 - 2024</span>
+                <span class="tag">Research writer</span>
+              </div>
+              <div class="timeline-body">
+                <h3>Reports, summaries, and presentation support</h3>
+                <p>
+                  Produced readable research summaries and presentation materials with a
+                  focus on accuracy, structure, and stakeholder-friendly language.
+                </p>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-meta">
+                <span class="year">2019 - 2021</span>
+                <span class="tag">Web content assistant</span>
+              </div>
+              <div class="timeline-body">
+                <h3>Pages, landing sections, and content QA</h3>
+                <p>
+                  Supported homepage copy, section hierarchy, and content checks for small
+                  websites that needed fast, reliable updates.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="projects" class="cards-grid">
+          <article class="panel card">
+            <p class="section-label">Project</p>
+            <h2>Portfolio narrative</h2>
+            <p>
+              A compact story-driven layout that highlights a personal bio, featured work, and
+              a downloadable resume link.
+            </p>
+          </article>
+
+          <article class="panel card">
+            <p class="section-label">Project</p>
+            <h2>Research summary system</h2>
+            <p>
+              Clean text hierarchy and a reusable format for turning long-form information into
+              a scan-friendly web page.
+            </p>
+          </article>
+
+          <article class="panel card">
+            <p class="section-label">Project</p>
+            <h2>Personal brand refresh</h2>
+            <p>
+              A visual language built around warm neutrals, sharp contrast, and restrained
+              accents to keep the focus on content.
+            </p>
+          </article>
+        </section>
+
+        <section class="skills-contact">
+          <section class="panel skills-panel">
+            <div class="section-heading">
+              <p class="section-label">Skills</p>
+              <h2>What I bring</h2>
+            </div>
+            <div class="skill-tags" aria-label="Skills">
+              <span>Editorial writing</span>
+              <span>Resume design</span>
+              <span>Research synthesis</span>
+              <span>Copyediting</span>
+              <span>Presentation copy</span>
+              <span>Web content planning</span>
+            </div>
+          </section>
+
+          <section id="contact" class="panel contact-panel">
+            <div class="section-heading">
+              <p class="section-label">Contact</p>
+              <h2>Let’s build something clear.</h2>
+            </div>
+            <p>
+              If you want a CV page, portfolio intro, or clean one-page profile, this layout is
+              ready to adapt.
+            </p>
+            <a class="button button-primary" href="mailto:justin@example.com">Email Justin</a>
+          </section>
+        </section>
+      </main>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
