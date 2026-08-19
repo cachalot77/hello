@@ -1,9 +1,7 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
 const navLinks = document.querySelectorAll('.site-nav a');
-const githubOwner = document.body?.dataset.githubOwner || 'cachalot77';
-const githubRepo = document.body?.dataset.githubRepo || 'chung.pin.hsu';
-const githubBranch = document.body?.dataset.githubBranch || 'main';
+const commitList = document.getElementById('commit-list');
 
 function setMenu(open) {
   if (!menuToggle || !siteNav) return;
@@ -28,70 +26,69 @@ if (menuToggle && siteNav) {
   });
 }
 
-function formatUpdateRow(entry) {
-  const timestamp = entry?.commit?.committer?.date || entry?.commit?.author?.date;
+function formatCommitRow(commit) {
+  const timestamp = commit?.timestamp || commit?.date || commit?.commit?.committer?.date || commit?.commit?.author?.date;
 
   if (!timestamp) {
     return null;
   }
 
-  const date = new Date(timestamp);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return `<li><span class="commit-time">${hours}:${minutes}</span><span class="commit-date">${year}-${month}-${day}</span></li>`;
-}
-
-function renderFallbackMessage(message) {
-  const commitList = document.getElementById('commit-list');
-  if (commitList) {
-    commitList.innerHTML = `<li><span class="commit-time">--:--</span><span class="commit-date">${message}</span></li>`;
+  const updatedAt = new Date(timestamp);
+  if (Number.isNaN(updatedAt.getTime())) {
+    return null;
   }
+
+  const pad = (value) => String(value).padStart(2, '0');
+  const time = `${pad(updatedAt.getHours())}:${pad(updatedAt.getMinutes())}:${pad(updatedAt.getSeconds())}`;
+  const date = `${updatedAt.getFullYear()}/${pad(updatedAt.getMonth() + 1)}/${pad(updatedAt.getDate())}`;
+
+  return `<li><span class="commit-time">${time}</span><span class="commit-date">${date}</span></li>`;
 }
 
-// Load the latest 5 update rows from GitHub Pages-friendly GitHub API
-async function loadCommitHistory() {
+function renderCommitFallback(message) {
+  if (!commitList) return;
+  commitList.innerHTML = `<li><span class="commit-time">--:--:--</span><span class="commit-date">${message}</span></li>`;
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Request failed with ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function loadLastUpdateTimes() {
+  if (!commitList) return;
+
   try {
-    const apiUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/commits?sha=${encodeURIComponent(githubBranch)}&per_page=5`;
-    const response = await fetch(apiUrl, {
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    });
+    const data = await fetchJson('./updates.json');
+    const updates = Array.isArray(data) ? data : data?.updates;
+    const rows = Array.isArray(updates)
+      ? updates.map(formatCommitRow).filter(Boolean).slice(0, 5)
+      : [];
 
-    if (!response.ok) {
-      throw new Error(`GitHub API request failed: ${response.status}`);
+    if (rows.length === 0) {
+      renderCommitFallback('No recent updates');
+      return;
     }
 
-    const data = await response.json();
-    const commitList = document.getElementById('commit-list');
-
-    if (commitList && Array.isArray(data) && data.length > 0) {
-      const rows = data
-        .slice(0, 5)
-        .map(formatUpdateRow)
-        .filter(Boolean);
-
-      if (rows.length > 0) {
-        commitList.innerHTML = rows.join('');
-        return;
-      }
-    }
-
-    renderFallbackMessage('No recent commits found');
+    commitList.innerHTML = rows.join('');
   } catch (error) {
-    console.log('Commit history not available', error);
-    renderFallbackMessage('GitHub API unavailable');
+    console.log('Last update history not available', error);
+    renderCommitFallback('Update data unavailable');
   }
 }
 
-// Load commits when page loads
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadCommitHistory);
+  document.addEventListener('DOMContentLoaded', loadLastUpdateTimes);
 } else {
-  loadCommitHistory();
+  loadLastUpdateTimes();
 }

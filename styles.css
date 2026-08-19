@@ -363,9 +363,81 @@ h3 {
 .card,
 .skills-panel,
 .contact-panel,
-#experience {
+#experience,
+.last-update-panel {
   padding: clamp(20px, 3vw, 32px);
   border-radius: var(--radius-xl);
+}
+
+.last-update-panel {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.last-update-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.last-update-label {
+  margin: 0;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.last-update-max {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(31, 26, 23, 0.06);
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.last-update-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.last-update-list li {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.last-update-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.commit-time {
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.commit-date {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .info-list {
@@ -487,79 +559,6 @@ h3 {
   max-width: 48ch;
 }
 
-.last-updates-figure {
-  margin: 0;
-  border: 2px solid var(--text);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  background: var(--panel);
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-}
-
-.updates-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.updates-label {
-  color: #ff6b6b;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  font-size: 0.85rem;
-  margin: 0;
-  text-transform: lowercase;
-}
-
-.updates-max {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(31, 26, 23, 0.06);
-  color: var(--muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.commit-dates {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.commit-dates li {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  gap: 12px;
-  align-items: center;
-  color: var(--muted);
-  font-size: 0.95rem;
-  padding: 10px 0;
-  border-top: 1px solid var(--line);
-}
-
-.commit-dates li:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.commit-time {
-  color: var(--text);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.commit-date {
-  font-variant-numeric: tabular-nums;
-}
-
 @media (max-width: 920px) {
   .hero,
   .content-grid,
@@ -581,9 +580,8 @@ h3 {
     grid-template-columns: 1fr;
   }
 
-  .updates-header {
+  .last-update-head {
     flex-direction: column;
-    align-items: start;
   }
 
   .timeline-meta {
@@ -640,7 +638,7 @@ h3 {
   .skills-panel,
   .contact-panel,
   #experience,
-  .last-updates-figure {
+  .last-update-panel {
     border-radius: 26px;
   }
 
