@@ -1,6 +1,9 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
 const navLinks = document.querySelectorAll('.site-nav a');
+const githubOwner = document.body?.dataset.githubOwner || 'cachalot77';
+const githubRepo = document.body?.dataset.githubRepo || 'chung.pin.hsu';
+const githubBranch = document.body?.dataset.githubBranch || 'main';
 
 function setMenu(open) {
   if (!menuToggle || !siteNav) return;
@@ -26,31 +29,63 @@ if (menuToggle && siteNav) {
 }
 
 function formatUpdateRow(entry) {
-  const date = entry?.date || 'Unknown date';
-  const time = entry?.time || '00:00';
-  return `<li><span class="commit-time">${time}</span><span class="commit-date">${date}</span></li>`;
+  const timestamp = entry?.commit?.committer?.date || entry?.commit?.author?.date;
+
+  if (!timestamp) {
+    return null;
+  }
+
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `<li><span class="commit-time">${hours}:${minutes}</span><span class="commit-date">${year}-${month}-${day}</span></li>`;
 }
 
-// Load last 5 update rows
+function renderFallbackMessage(message) {
+  const commitList = document.getElementById('commit-list');
+  if (commitList) {
+    commitList.innerHTML = `<li><span class="commit-time">--:--</span><span class="commit-date">${message}</span></li>`;
+  }
+}
+
+// Load the latest 5 update rows from GitHub Pages-friendly GitHub API
 async function loadCommitHistory() {
   try {
-    const response = await fetch('./commits.json');
+    const apiUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/commits?sha=${encodeURIComponent(githubBranch)}&per_page=5`;
+    const response = await fetch(apiUrl, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`GitHub API request failed: ${response.status}`);
+    }
+
     const data = await response.json();
     const commitList = document.getElementById('commit-list');
-    
-    if (commitList && data.commits && data.commits.length > 0) {
-      commitList.innerHTML = data.commits
+
+    if (commitList && Array.isArray(data) && data.length > 0) {
+      const rows = data
         .slice(0, 5)
         .map(formatUpdateRow)
-        .join('');
+        .filter(Boolean);
+
+      if (rows.length > 0) {
+        commitList.innerHTML = rows.join('');
+        return;
+      }
     }
+
+    renderFallbackMessage('No recent commits found');
   } catch (error) {
-    console.log('Commit history not available');
-    // Silently fail if commits.json doesn't exist
-    const commitList = document.getElementById('commit-list');
-    if (commitList) {
-      commitList.innerHTML = '<li><span class="commit-time">--:--</span><span class="commit-date">Commit history not available</span></li>';
-    }
+    console.log('Commit history not available', error);
+    renderFallbackMessage('GitHub API unavailable');
   }
 }
 
@@ -60,4 +95,3 @@ if (document.readyState === 'loading') {
 } else {
   loadCommitHistory();
 }
-
