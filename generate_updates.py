@@ -28,9 +28,9 @@ def read_git_timestamps():
 
     timestamps = []
     for line in result.stdout.strip().splitlines():
-      if line.strip():
-        date_part, time_part, tz_part = line.split()[:3]
-        timestamps.append(f"{date_part}T{time_part}{tz_part[:3]}:{tz_part[3:]}")
+        if line.strip():
+            date_part, time_part, tz_part = line.split()[:3]
+            timestamps.append(f"{date_part}T{time_part}{tz_part[:3]}:{tz_part[3:]}")
 
     return timestamps
 
